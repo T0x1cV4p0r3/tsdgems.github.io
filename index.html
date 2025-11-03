@@ -432,6 +432,8 @@
       gap: 2rem;
       margin-top: 2rem;
       justify-items: start;
+      align-items: stretch;
+      grid-auto-rows: 1fr;
     }
     
     .gallery-item {
@@ -450,6 +452,8 @@
       align-items: flex-start;
       width: 100%;
       max-width: 250px;
+      height: 100%;
+      justify-content: flex-start;
     }
     
     .gallery-item::before {
@@ -505,8 +509,17 @@
       font-size: 1.1rem;
       text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
     }
+
+    .gallery-item > a {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      width: 100%;
+      flex: 1;
+    }
     
-    .earning {
+    .earning,
+    .mp-stat {
       margin-top: 0.8rem;
       color: #e9ecef;
       font-size: 0.95rem;
@@ -515,6 +528,11 @@
       padding: 0.5rem 1rem;
       border-radius: 10px;
       border: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .mp-stat span {
+      color: #ffd700;
+      font-weight: 600;
     }
     
     /* Platform Buttons */
@@ -583,6 +601,135 @@
       font-size: 1rem;
       color: #adb5bd;
       font-weight: 400;
+    }
+
+    /* Game Section */
+    #game {
+      position: relative;
+      background: linear-gradient(140deg, rgba(255, 215, 0, 0.08) 0%, rgba(147, 112, 219, 0.08) 50%, rgba(255, 105, 180, 0.08) 100%);
+    }
+
+    .game-callout {
+      position: relative;
+      padding: 3.5rem;
+      border-radius: 26px;
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.18), rgba(137, 96, 255, 0.12));
+      border: 1px solid rgba(255, 215, 0, 0.45);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .game-callout::before {
+      content: '';
+      position: absolute;
+      inset: -80% -20% 20% -20%;
+      background: radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.12), transparent 60%),
+        conic-gradient(from 180deg, rgba(255, 215, 0, 0.28), transparent, rgba(147, 112, 219, 0.24));
+      animation: rotate 18s linear infinite;
+      opacity: 0.55;
+    }
+
+    .game-callout > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .game-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 1.4rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.05));
+      border: 1px solid rgba(255, 215, 0, 0.45);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #ffd700;
+      box-shadow: 0 0 18px rgba(255, 215, 0, 0.25);
+      margin-bottom: 1.5rem;
+    }
+
+    .game-callout h3 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      color: #f8f9fa;
+      line-height: 1.3;
+      text-shadow: 0 0 30px rgba(255, 215, 0, 0.25);
+      margin-bottom: 1.2rem;
+    }
+
+    .game-callout p {
+      color: #e9ecef;
+      font-size: 1.15rem;
+      max-width: 720px;
+      margin: 0 auto 2.5rem auto;
+      line-height: 1.7;
+    }
+
+    .game-callout p + p {
+      margin-top: 1.2rem;
+    }
+
+    .game-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .game-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.95rem 2.4rem;
+      border-radius: 999px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 2px solid transparent;
+      font-size: 0.95rem;
+    }
+
+    .game-button.primary {
+      background: linear-gradient(135deg, #ffd700, #ffed4e, #ffd700);
+      color: #1a1a1a;
+      box-shadow: 0 20px 35px rgba(255, 215, 0, 0.35);
+    }
+
+    .game-button.secondary {
+      background: rgba(0, 0, 0, 0.55);
+      border-color: rgba(255, 215, 0, 0.4);
+      color: #f8f9fa;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
+    }
+
+    .game-button:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 45px rgba(255, 215, 0, 0.45);
+    }
+
+    @media (max-width: 768px) {
+      .game-callout {
+        padding: 3rem 2rem;
+      }
+
+      .game-callout p {
+        font-size: 1.05rem;
+      }
+
+      .game-actions {
+        flex-direction: column;
+      }
+
+      .game-button {
+        width: 100%;
+      }
     }
     
     /* Rewards Section */
@@ -1767,6 +1914,7 @@
         <a href="#start">🚀 Start</a>
         <a href="#about">💎 About</a>
         <a href="#vision">🎯 Vision</a>
+        <a href="#game">🎮 Game</a>
         <a href="#gallery">🖼️ Gallery</a>
         <a href="#rewards">🔥 Rewards</a>
         <a href="#faq">❓ FAQ</a>
@@ -1898,6 +2046,20 @@
         <span class="platform-name">TacoSwap</span>
         <span class="platform-desc">Stake $TSDM tokens</span>
       </a>
+    </div>
+  </section>
+
+  <section id="game">
+    <h2>Enter the TSDGEMS Mining Simulator</h2>
+    <div class="game-callout">
+      <span class="game-tag">Live on WAX</span>
+      <h3>Start your mining empire now!</h3>
+      <p>Join TSDGEMS, the ultimate blockchain-based gems mining simulator.</p>
+      <p>Connect your wallet and launch your mining empire today: hire workers, unlock mining slots, polish your raw gems, and trade to increase your in-game $ balance.</p>
+      <div class="game-actions">
+        <a class="game-button primary" href="https://tsdgems.xyz/" target="_blank" rel="noopener">Launch the Game</a>
+        <a class="game-button secondary" href="https://discord.gg/AfDsnev7kH" target="_blank" rel="noopener">Join the Community</a>
+      </div>
     </div>
   </section>
 
@@ -2049,6 +2211,7 @@
           <p>Pickaxe Worker #894928</p>
         </a>
         <div class="earning">Earns: 0.2083 TSDM/hour (5.00 TSDM/day)</div>
+        <div class="mp-stat">Mining Power: <span>50 MP</span></div>
       </div>
       <div class="gallery-item">
         <a href="https://neftyblocks.com/templates/tsdmediagems/894929" target="_blank">
@@ -2056,6 +2219,7 @@
           <p>Hammer Drill Worker #894929</p>
         </a>
         <div class="earning">Earns: 0.4583 TSDM/hour (11.00 TSDM/day)</div>
+        <div class="mp-stat">Mining Power: <span>110 MP</span></div>
       </div>
       <div class="gallery-item">
         <a href="https://neftyblocks.com/templates/tsdmediagems/894930" target="_blank">
@@ -2063,6 +2227,7 @@
           <p>Mini Excavator Worker #894930</p>
         </a>
         <div class="earning">Earns: 1.0208 TSDM/hour (24.50 TSDM/day)</div>
+        <div class="mp-stat">Mining Power: <span>245 MP</span></div>
       </div>
       <div class="gallery-item">
         <a href="https://neftyblocks.com/templates/tsdmediagems/894931" target="_blank">
@@ -2070,6 +2235,7 @@
           <p>Excavator #894931</p>
         </a>
         <div class="earning">Earns: 2.2500 TSDM/hour (54.00 TSDM/day)</div>
+        <div class="mp-stat">Mining Power: <span>540 MP</span></div>
       </div>
       <div class="gallery-item">
         <a href="https://neftyblocks.com/templates/tsdmediagems/894932" target="_blank">
@@ -2077,6 +2243,7 @@
           <p>Dump Truck #894932</p>
         </a>
         <div class="earning">Earns: 4.9583 TSDM/hour (119.00 TSDM/day)</div>
+        <div class="mp-stat">Mining Power: <span>1,190 MP</span></div>
       </div>
       <div class="gallery-item">
         <a href="https://neftyblocks.com/templates/tsdmediagems/894933" target="_blank">
@@ -2084,6 +2251,7 @@
           <p>Small Mine #894933</p>
         </a>
         <div class="earning">Earns: 10.9167 TSDM/hour (262.00 TSDM/day)</div>
+        <div class="mp-stat">Mining Power: <span>2,620 MP</span></div>
       </div>
       <div class="gallery-item">
         <a href="https://neftyblocks.com/templates/tsdmediagems/894934" target="_blank">
@@ -2091,6 +2259,7 @@
           <p>Medium Mine #894934</p>
         </a>
         <div class="earning">Earns: 24.0208 TSDM/hour (576.50 TSDM/day)</div>
+        <div class="mp-stat">Mining Power: <span>5,765 MP</span></div>
       </div>
       <div class="gallery-item">
         <a href="https://neftyblocks.com/templates/tsdmediagems/894935" target="_blank">
@@ -2098,6 +2267,7 @@
           <p>Large Mine #894935</p>
         </a>
         <div class="earning">Earns: 52.8542 TSDM/hour (1268.50 TSDM/day)</div>
+        <div class="mp-stat">Mining Power: <span>12,685 MP</span></div>
       </div>
     </div>
 
