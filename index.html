@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv='cache-control' content='no-cache'> 
-  <meta http-equiv='expires' content='0'> 
-  <meta http-equiv='pragma' content='no-cache'>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>TSDMEDIAGEMS NFT Collection</title>
   <style>
     * {
@@ -1680,8 +1677,19 @@
       margin: 0 auto;
     }
     
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .diamond-rain {
+        display: none !important;
+      }
+    }
 
     
+
     .exchange-table th:first-child {
       width: 100px;
       text-align: center;
@@ -1691,34 +1699,6 @@
     @media (orientation: portrait) and (max-width: 768px) {
       .nav-container {
         padding: 0 1.5rem;
-      }
-      
-      .nav-toggle {
-        width: 30px;
-        height: 25px;
-        display: flex !important;
-        background: transparent;
-        border: none;
-        padding: 0;
-        position: relative;
-        z-index: 1001;
-      }
-      
-      .nav-toggle span {
-        width: 25px;
-        height: 3px;
-        background: #ffd700;
-        border-radius: 2px;
-        transition: all 0.3s ease;
-        display: block;
-      }
-      
-      .nav-toggle.active span:nth-child(1) {
-        transform: rotate(45deg) translate(6px, 6px);
-      }
-      
-      .nav-toggle.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(6px, -6px);
       }
     }
     
@@ -2540,116 +2520,206 @@
     &copy; 2025 TSDMEDIAGEMS. All rights reserved.
   </footer>
 
-  <script>
-    // Mobile Navigation
-    const navToggle = document.getElementById('navToggle');
-    const navMenu = document.getElementById('navMenu');
-    
-    navToggle.addEventListener('click', () => {
-      navToggle.classList.toggle('active');
-      navMenu.classList.toggle('active');
-    });
-    
-    // Close mobile menu when clicking on a link
-    navMenu.addEventListener('click', (e) => {
-      if (e.target.tagName === 'A') {
-        navToggle.classList.remove('active');
-        navMenu.classList.remove('active');
-      }
-    });
-    
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
-        navToggle.classList.remove('active');
-        navMenu.classList.remove('active');
-      }
-    });
-    
-    // FAQ Functionality
-    const faqItems = document.querySelectorAll('.faq-item');
-    faqItems.forEach(item => {
-      const question = item.querySelector('.faq-question');
-      question.addEventListener('click', () => {
-        const isActive = item.classList.contains('active');
-        
-        // Close all other FAQ items
-        faqItems.forEach(otherItem => {
-          otherItem.classList.remove('active');
+    <script>
+      const navToggle = document.getElementById('navToggle');
+      const navMenu = document.getElementById('navMenu');
+
+      const secureExternalLinks = () => {
+        document.querySelectorAll('a[target="_blank"]').forEach((link) => {
+          const relTokens = new Set((link.getAttribute('rel') || '').split(/\s+/).filter(Boolean));
+          relTokens.add('noopener');
+          relTokens.add('noreferrer');
+          link.setAttribute('rel', Array.from(relTokens).join(' '));
         });
-        
-        // Toggle current item
-        if (!isActive) {
-          item.classList.add('active');
+      };
+
+      const runIdleTask = (task) => {
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(task);
+        } else {
+          window.setTimeout(task, 0);
+        }
+      };
+
+      const enhanceImageLoading = () => {
+        const images = document.querySelectorAll('img');
+        images.forEach((img, index) => {
+          if (!img.hasAttribute('loading')) {
+            img.loading = index < 2 ? 'eager' : 'lazy';
+          }
+          if (!img.hasAttribute('decoding')) {
+            img.decoding = 'async';
+          }
+        });
+      };
+
+      secureExternalLinks();
+      runIdleTask(enhanceImageLoading);
+
+      if (navToggle && navMenu) {
+        navToggle.addEventListener('click', () => {
+          navToggle.classList.toggle('active');
+          navMenu.classList.toggle('active');
+        });
+
+        navMenu.addEventListener('click', (event) => {
+          if (event.target.tagName === 'A') {
+            navToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+          }
+        });
+
+        document.addEventListener('click', (event) => {
+          if (!navToggle.contains(event.target) && !navMenu.contains(event.target)) {
+            navToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+          }
+        });
+      }
+
+      // FAQ Functionality
+      const faqItems = document.querySelectorAll('.faq-item');
+      faqItems.forEach((item) => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+          const isActive = item.classList.contains('active');
+
+          faqItems.forEach((otherItem) => {
+            otherItem.classList.remove('active');
+          });
+
+          if (!isActive) {
+            item.classList.add('active');
+          }
+        });
+      });
+
+      // Countdown Timer
+      const targetDate = new Date('2025-07-21T12:00:00+02:00');
+      const countdownElements = {
+        container: document.getElementById('headerCountdown'),
+        timer: document.getElementById('countdownTimer'),
+        days: document.getElementById('days'),
+        hours: document.getElementById('hours'),
+        minutes: document.getElementById('minutes'),
+        seconds: document.getElementById('seconds'),
+      };
+
+      let countdownInterval = null;
+
+      const stopCountdown = () => {
+        if (countdownInterval !== null) {
+          window.clearInterval(countdownInterval);
+          countdownInterval = null;
+        }
+      };
+
+      const updateCountdown = () => {
+        const now = new Date();
+        const timeDifference = targetDate - now;
+
+        if (timeDifference > 0) {
+          const daysRemaining = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+          const hoursRemaining = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutesRemaining = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+          const secondsRemaining = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+          if (countdownElements.days) {
+            countdownElements.days.textContent = daysRemaining.toString().padStart(2, '0');
+          }
+          if (countdownElements.hours) {
+            countdownElements.hours.textContent = hoursRemaining.toString().padStart(2, '0');
+          }
+          if (countdownElements.minutes) {
+            countdownElements.minutes.textContent = minutesRemaining.toString().padStart(2, '0');
+          }
+          if (countdownElements.seconds) {
+            countdownElements.seconds.textContent = secondsRemaining.toString().padStart(2, '0');
+          }
+
+          if (countdownElements.timer) {
+            countdownElements.timer.style.display = 'flex';
+          }
+        } else {
+          if (countdownElements.container) {
+            countdownElements.container.remove();
+          }
+          stopCountdown();
+        }
+      };
+
+      countdownInterval = window.setInterval(updateCountdown, 1000);
+      updateCountdown();
+
+      // Diamond Rain Animation
+      const diamondRainContainer = document.getElementById('diamondRain');
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const MAX_DIAMONDS = 12;
+      let diamondIntervalId = null;
+
+      const createDiamond = () => {
+        if (!diamondRainContainer || prefersReducedMotion.matches) {
+          return;
+        }
+
+        if (diamondRainContainer.childElementCount >= MAX_DIAMONDS) {
+          return;
+        }
+
+        const diamond = document.createElement('div');
+        diamond.className = 'diamond';
+        diamond.textContent = '💎';
+        diamond.style.left = `${Math.random() * 100}%`;
+        diamond.style.animationDuration = `${Math.random() * 6 + 10}s`;
+        diamond.style.animationDelay = `${Math.random() * 2}s`;
+
+        diamondRainContainer.appendChild(diamond);
+
+        window.setTimeout(() => {
+          diamond.remove();
+        }, 16000);
+      };
+
+      const startDiamondRain = () => {
+        if (!diamondRainContainer || prefersReducedMotion.matches || diamondIntervalId) {
+          return;
+        }
+
+        diamondIntervalId = window.setInterval(createDiamond, 4000);
+        for (let i = 0; i < 2; i += 1) {
+          window.setTimeout(createDiamond, i * 2000);
+        }
+      };
+
+      const stopDiamondRain = () => {
+        if (diamondIntervalId) {
+          window.clearInterval(diamondIntervalId);
+          diamondIntervalId = null;
+        }
+      };
+
+      if (!prefersReducedMotion.matches) {
+        startDiamondRain();
+      }
+
+      prefersReducedMotion.addEventListener('change', (event) => {
+        if (event.matches) {
+          stopDiamondRain();
+          if (diamondRainContainer) {
+            diamondRainContainer.textContent = '';
+          }
+        } else {
+          startDiamondRain();
         }
       });
-    });
-    
-    // Countdown Timer
-    function updateCountdown() {
-      // Set the target date: July 21st, 2025 at 12:00 PM CEST (Central European Summer Time)
-      const targetDate = new Date('2025-07-21T12:00:00+02:00'); // CEST timezone
-      const now = new Date();
-      
-      const timeDifference = targetDate - now;
-      
-      if (timeDifference > 0) {
-        // Calculate time units
-        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-        
-        // Update the countdown display
-        document.getElementById('days').textContent = days.toString().padStart(2, '0');
-        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-        
-        // Show countdown timer, hide completed message
-        document.getElementById('countdownTimer').style.display = 'flex';
-        document.getElementById('countdownCompleted').style.display = 'none';
-      } else {
-        // Countdown has ended - remove the entire header countdown
-        const headerCountdown = document.getElementById('headerCountdown');
-        if (headerCountdown) {
-          headerCountdown.remove();
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          stopDiamondRain();
+        } else {
+          startDiamondRain();
         }
-        // Stop the countdown interval
-        clearInterval(countdownInterval);
-      }
-    }
-    
-    // Update countdown every second
-    const countdownInterval = setInterval(updateCountdown, 1000);
-    
-    // Initial countdown update
-    updateCountdown();
-    
-    // Diamond Rain Animation
-    function createDiamond() {
-      const diamond = document.createElement('div');
-      diamond.className = 'diamond';
-      diamond.innerHTML = '💎';
-      diamond.style.left = Math.random() * 100 + '%';
-      diamond.style.animationDuration = (Math.random() * 6 + 10) + 's';
-      diamond.style.animationDelay = Math.random() * 2 + 's';
-      
-      document.getElementById('diamondRain').appendChild(diamond);
-      
-      // Remove diamond after animation
-      setTimeout(() => {
-        diamond.remove();
-      }, 16000);
-    }
-    
-    // Create diamonds periodically
-    setInterval(createDiamond, 4000);
-    
-    // Initial diamonds
-    for (let i = 0; i < 2; i++) {
-      setTimeout(createDiamond, i * 2000);
-    }
-  </script>
+      });
+    </script>
 </body>
 </html>
